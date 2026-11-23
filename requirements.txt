@@ -1,9 +1,1 @@
-pandas
-numpy
-streamlit
-matplotlib
-seaborn
-tensorflow
-path
-fastapi
-uvicorn
+
