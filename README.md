@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ZahanatiPulse
 
 ### Smart Healthcare Management and Patient Flow System
@@ -61,3 +62,6 @@ Currently in the system design and development preparation phase. Features are b
 ## Disclaimer
 
 ZahanatiPulse is a student-developed healthcare technology prototype intended for educational, innovation, and demonstration purposes. It is not a certified clinical system or a substitute for professional medical judgment.
+=======
+
+>>>>>>> ad369bb14552423268768f2688486b1c57605e27

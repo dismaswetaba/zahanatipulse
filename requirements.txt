@@ -1,1 +1,6 @@
+<<<<<<< HEAD
+flask
+python-dontenv
+=======
 
+>>>>>>> 0a9df016ca715a89be54c9fbdad15545e8fcc127
