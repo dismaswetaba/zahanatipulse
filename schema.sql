@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS stock_movements, inventory, medicines, queue_entries,
     appointments, patients, users, facilities CASCADE;
- 
+
 CREATE TABLE facilities (
     facility_id SERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE facilities (
     phone VARCHAR(30),
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
- 
+
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     facility_id INTEGER NOT NULL REFERENCES facilities(facility_id),
@@ -20,7 +20,7 @@ CREATE TABLE users (
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
- 
+
 CREATE TABLE patients (
     patient_id SERIAL PRIMARY KEY,
     facility_id INTEGER NOT NULL REFERENCES facilities(facility_id),
@@ -32,7 +32,7 @@ CREATE TABLE patients (
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     UNIQUE (facility_id, patient_number)
 );
- 
+
 CREATE TABLE appointments (
     appointment_id SERIAL PRIMARY KEY,
     facility_id INTEGER NOT NULL REFERENCES facilities(facility_id),
@@ -44,7 +44,7 @@ CREATE TABLE appointments (
     created_by INTEGER REFERENCES users(user_id),
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
- 
+
 CREATE TABLE queue_entries (
     queue_entry_id SERIAL PRIMARY KEY,
     facility_id INTEGER NOT NULL REFERENCES facilities(facility_id),
@@ -60,14 +60,14 @@ CREATE TABLE queue_entries (
     completed_at TIMESTAMP,
     UNIQUE (facility_id, queue_date, department, queue_number)
 );
- 
+
 CREATE TABLE medicines (
     medicine_id SERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
     strength VARCHAR(50),
     form VARCHAR(50)
 );
- 
+
 CREATE TABLE inventory (
     inventory_id SERIAL PRIMARY KEY,
     facility_id INTEGER NOT NULL REFERENCES facilities(facility_id),
@@ -77,7 +77,7 @@ CREATE TABLE inventory (
     updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
     UNIQUE (facility_id, medicine_id)
 );
- 
+
 CREATE TABLE stock_movements (
     movement_id SERIAL PRIMARY KEY,
     inventory_id INTEGER NOT NULL REFERENCES inventory(inventory_id),
@@ -87,7 +87,7 @@ CREATE TABLE stock_movements (
     quantity_changed INTEGER NOT NULL CHECK (quantity_changed > 0),
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
- 
+
 CREATE INDEX idx_patients_name ON patients (facility_id, full_name);
 CREATE INDEX idx_appointments_date ON appointments (facility_id, appointment_datetime);
 CREATE INDEX idx_queue_today ON queue_entries (facility_id, queue_date, status);
