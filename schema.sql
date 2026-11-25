@@ -4,8 +4,8 @@ DROP TABLE IF EXISTS stock_movements, inventory, medicines, queue_entries,
 CREATE TABLE facilities (
     facility_id SERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
-    location VARCHAR(150),
-    phone VARCHAR(30),
+    location VARCHAR(20),
+    phone VARCHAR(15),
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
@@ -13,7 +13,7 @@ CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     facility_id INTEGER NOT NULL REFERENCES facilities(facility_id),
     full_name VARCHAR(150) NOT NULL,
-    email VARCHAR(150) NOT NULL UNIQUE,
+    email VARCHAR(30) NOT NULL UNIQUE,
     password_hash TEXT NOT NULL,
     role VARCHAR(20) NOT NULL
         CHECK (role IN ('admin','receptionist','clinician','pharmacist')),
