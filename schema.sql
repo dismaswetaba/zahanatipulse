@@ -24,15 +24,15 @@ CREATE TABLE users (
 CREATE TABLE patients (
     patient_id SERIAL PRIMARY KEY,
     facility_id INTEGER NOT NULL REFERENCES facilities(facility_id),
-    patient_number VARCHAR(30) NOT NULL,
-    full_name VARCHAR(150) NOT NULL,
-    date_of_birth DATE,
     phone VARCHAR(30),
     created_by INTEGER REFERENCES users(user_id),
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     UNIQUE (facility_id, patient_number)
 );
 
+    patient_number VARCHAR(30) NOT NULL,
+    full_name VARCHAR(150) NOT NULL,
+    date_of_birth DATE,
 CREATE TABLE appointments (
     appointment_id SERIAL PRIMARY KEY,
     facility_id INTEGER NOT NULL REFERENCES facilities(facility_id),
@@ -46,13 +46,13 @@ CREATE TABLE appointments (
 );
 
 CREATE TABLE queue_entries (
-    queue_entry_id SERIAL PRIMARY KEY,
+    queue_entry_id SERIAL PRIMARY KEY,;/k,kkk,kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
     facility_id INTEGER NOT NULL REFERENCES facilities(facility_id),
     patient_id INTEGER NOT NULL REFERENCES patients(patient_id),
     appointment_id INTEGER REFERENCES appointments(appointment_id),
-    queue_number INTEGER NOT NULL,
+    queue_number INTEGER NOT NU 
     queue_date DATE NOT NULL DEFAULT CURRENT_DATE,
-    department VARCHAR(50) NOT NULL,
+    department VARCHAR(150) NOT NULL,
     status VARCHAR(20) NOT NULL DEFAULT 'Waiting'
         CHECK (status IN ('Waiting','Called','In Service','Completed','Cancelled')),
     issued_at TIMESTAMP NOT NULL DEFAULT NOW(),
