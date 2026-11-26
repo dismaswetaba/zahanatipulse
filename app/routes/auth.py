@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, redirect, render_template, request, sessio
 from werkzeug.security import check_password_hash
 
 from db import get_connection
-from app.config import login_required
+from zahanatipulse.app.decorators import login_required
 
 auth_bp = Blueprint("auth", __name__)
 
