@@ -22,7 +22,8 @@ def check(label, actual, expected):
         f"{'PASS' if ok else 'FAIL'}  {label}  "
         f"(got {actual}, expected {expected})"
     )
-    
+
+
 # 1. Anonymous user
 client = app.test_client()
 check(
@@ -89,7 +90,7 @@ check(
 check(
     "Meru admin -> patient records is forbidden",
     client.get("/api/patients/1").status_code,
-        403,
+    403,
 )
 
 staff = client.get("/api/staff").get_json()
@@ -107,4 +108,3 @@ check(
 
 print()
 print("ALL TESTS PASSED" if failures == 0 else f"{failures} TEST(S) FAILED")
-

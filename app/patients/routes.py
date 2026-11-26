@@ -25,7 +25,7 @@ def get_patient(patient_id):
             created_at
         FROM patients
         WHERE patient_id = %s
-        AND facility_id = %s
+          AND facility_id = %s
         """,
         (patient_id, current_facility_id()),
     )

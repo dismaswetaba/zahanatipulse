@@ -15,7 +15,6 @@ from app.auth.decorators import (
     current_facility_id,
 )
 
-
 auth_bp = Blueprint("auth", __name__)
 
 

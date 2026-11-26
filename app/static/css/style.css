@@ -90,3 +90,28 @@ button {
 
 
 
+
+/* ---- app layout (pages with the top menu) ---- */
+body.app { display: block; }
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.5rem;
+  background: #1f4e79;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+}
+.topbar .brand { font-weight: bold; font-size: 1.1rem; }
+.topbar nav { display: flex; flex-wrap: wrap; gap: 1rem; flex: 1; }
+.topbar nav a { color: #fff; text-decoration: none; opacity: 0.9; }
+.topbar nav a:hover { text-decoration: underline; }
+.userbox { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; }
+.link-button {
+  width: auto;
+  margin: 0;
+  padding: 0.4rem 0.8rem;
+  background: #fff;
+  color: #1f4e79;
+}
+.content { max-width: 960px; margin: 1.5rem auto; padding: 0 1rem; }

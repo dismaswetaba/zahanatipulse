@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard – ZahanatiPulse{% endblock %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+
+    <p>
+        Welcome, {{ session.full_name }}.
+        You are logged in as a {{ session.role }} at
+        {{ session.facility_name }}.
+    </p>
+
+    <p>
+        The menu above shows the pages available to your role.
+    </p>
+{% endblock %}

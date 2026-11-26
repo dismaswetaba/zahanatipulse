@@ -1,7 +1,13 @@
 venv/
 .env
 .venv/
+<<<<<<< HEAD
 *.py[cod]
 __pycache__/
 .pytest_cache
 
+=======
+__pycache__/
+*.py[cod]
+.pytest_cache/
+>>>>>>> 7442724b53e3c24b32113554dc507d926a0405de
