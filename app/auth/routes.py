@@ -8,8 +8,13 @@ from flask import (
     url_for,
 )
 from werkzeug.security import check_password_hash
-from db import get_connection
-from app.auth.decorators import login_required
+from db import get_connection, fetch_all
+from app.auth.decorators import (
+    login_required,
+    role_required,
+    current_facility_id,
+)
+
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -99,3 +104,19 @@ def me():
             "facility_name": session["facility_name"],
         }
     )
+
+@auth_bp.route("/api/staff")
+@login_required
+@role_required("admin")
+def list_staff():
+    staff = fetch_all(
+        """
+        SELECT user_id, full_name, email, role, is_active
+        FROM users
+        WHERE facility_id = %s
+        ORDER BY role, full_name
+        """,
+        (current_facility_id(),),
+    )
+    return jsonify(staff)
+

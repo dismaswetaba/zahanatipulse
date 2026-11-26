@@ -1,36 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ZahanatiPulse – Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style.css') }}">
-</head>
-<body>
-    <main class="card">
+{% extends "base.html" %}
+
+{% block title %}Dashboard – ZahanatiPulse{% endblock %}
+
+{% block content %}
     <h1>Dashboard</h1>
-    <p id="welcome">Loading...</p>
-    <button id="logout">Log out</button>
-    </main>
 
-    <script>
-    async function loadUser() {
-        const res = await fetch("/api/auth/me");
-        if (res.status === 401) {
-        window.location.href = "/login";
-        return;
-        }
-        const user = await res.json();
-        document.getElementById("welcome").textContent =
-        "Welcome, " + user.full_name + " (" + user.role + ") – " + user.facility_name;
-    }
+    <p>
+        Welcome, {{ session.full_name }}.
+        You are logged in as a {{ session.role }} at
+        {{ session.facility_name }}.
+    </p>
 
-    document.getElementById("logout").addEventListener("click", async () => {
-        await fetch("/api/auth/logout", { method: "POST" });
-        window.location.href = "/login";
-    });
+    <p>
+        The menu above shows the pages available to your role.
+    </p>
+{% endblock %}
 
-    loadUser();
-    </script>
-</body>
-</html>
