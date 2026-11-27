@@ -1,19 +1,8 @@
-from flask import (
-    Blueprint,
-    jsonify,
-    redirect,
-    render_template,
-    request,
-    session,
-    url_for,
-)
+from flask import Blueprint, jsonify, redirect, render_template, request, session, url_for
 from werkzeug.security import check_password_hash
+
 from db import get_connection, fetch_all
-from app.auth.decorators import (
-    login_required,
-    role_required,
-    current_facility_id,
-)
+from app.auth.decorators import login_required, role_required, current_facility_id
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -27,8 +16,6 @@ def home():
 
 @auth_bp.route("/login")
 def login_page():
-    if "user_id" in session:
-        return redirect(url_for("auth.dashboard"))
     return render_template("login.html")
 
 
@@ -40,17 +27,10 @@ def dashboard():
 
 @auth_bp.route("/api/auth/login", methods=["POST"])
 def login():
-    data = request.get_json(silent=True)
-    if not isinstance(data, dict):
-        return jsonify({"error": "Invalid request data"}), 400
+    data = request.get_json(silent=True) or {}
+    email = (data.get("email") or "").strip().lower()
+    password = data.get("password") or ""
 
-    email = data.get("email", "")
-    password = data.get("password", "")
-
-    if not isinstance(email, str) or not isinstance(password, str):
-        return jsonify({"error": "Invalid input"}), 400
-
-    email = email.strip().lower()
     if not email or not password:
         return jsonify({"error": "Email and password are required"}), 400
 
@@ -60,7 +40,7 @@ def login():
             cur.execute(
                 """
                 SELECT u.user_id, u.full_name, u.password_hash, u.role,
-                        u.facility_id, f.name
+                       u.facility_id, f.name
                 FROM users u
                 JOIN facilities f ON f.facility_id = u.facility_id
                 WHERE u.email = %s AND u.is_active = TRUE
@@ -74,7 +54,6 @@ def login():
     if row is None or not check_password_hash(row[2], password):
         return jsonify({"error": "Invalid email or password"}), 401
 
-    # Clear any old session data before creating the authenticated session
     session.clear()
     session["user_id"] = row[0]
     session["full_name"] = row[1]
@@ -94,15 +73,13 @@ def logout():
 @auth_bp.route("/api/auth/me")
 @login_required
 def me():
-    return jsonify(
-        {
-            "user_id": session["user_id"],
-            "full_name": session["full_name"],
-            "role": session["role"],
-            "facility_id": session["facility_id"],
-            "facility_name": session["facility_name"],
-        }
-    )
+    return jsonify({
+        "user_id": session["user_id"],
+        "full_name": session["full_name"],
+        "role": session["role"],
+        "facility_id": session["facility_id"],
+        "facility_name": session["facility_name"],
+    })
 
 @auth_bp.route("/api/staff")
 @login_required
@@ -118,4 +95,3 @@ def list_staff():
         (current_facility_id(),),
     )
     return jsonify(staff)
-
