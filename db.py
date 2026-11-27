@@ -1,4 +1,5 @@
 import os
+from contextlib import contextmanager
  
 import psycopg2
 from psycopg2.extras import RealDictCursor
@@ -29,3 +30,15 @@ def fetch_one(sql, params=()):
     """Run a SELECT query and return one row, or None if no row exists."""
     rows = fetch_all(sql, params)
     return rows[0] if rows else None
+ 
+ 
+@contextmanager
+def transaction():
+    """Give the caller a cursor. Commit if the block succeeds, roll back if it fails."""
+    conn = get_connection()
+    try:
+        with conn:
+            with conn.cursor(cursor_factory=RealDictCursor) as cur:
+                yield cur
+    finally:
+        conn.close()

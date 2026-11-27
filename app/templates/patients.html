@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+ 
+{% block title %}Patients – ZahanatiPulse{% endblock %}
+ 
+{% block content %}
+    <h1>Patients</h1>
+ 
+    {% if session.role == "receptionist" %}
+    <section class="panel">
+        <h2>Register a new patient</h2>
+        <form id="register-form">
+            <label for="full_name">Full name</label>
+            <input type="text" id="full_name" maxlength="150" required>
+ 
+            <label for="date_of_birth">Date of birth</label>
+            <input type="date" id="date_of_birth">
+                        <label for="phone">Phone</label>
+            <input type="tel" id="phone" maxlength="30">
+ 
+            <button type="submit">Register patient</button>
+            <p id="register-message" class="message"></p>
+        </form>
+    </section>
+    {% endif %}
+ 
+    <section class="panel">
+        <h2>Search patients</h2>
+        <input type="search" id="search"
+                placeholder="Search by name or patient number">
+ 
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Name</th>
+                        <th>Date of birth</th>
+                        <th>Phone</th>
+                    </tr>
+                </thead>
+                <tbody id="results"></tbody>
+            </table>
+        </div>
+        <p id="empty" class="message"></p>
+    </section>
+{% endblock %}
+ 
+{% block scripts %}
+<script>
+    const resultsBody = document.getElementById("results");
+    const emptyMessage = document.getElementById("empty");
+    const searchBox = document.getElementById("search");
+ 
+    function makeCell(text) {
+        const td = document.createElement("td");
+        td.textContent = text || "";
+        return td;
+    }
+ 
+    async function loadPatients() {
+        const term = encodeURIComponent(searchBox.value.trim());
+        const response = await fetch("/api/patients?search=" + term);
+ 
+        if (response.status === 401) {
+            window.location.href = "/login";
+            return;
+        }
+ 
+        const patients = await response.json();
+        resultsBody.innerHTML = "";
+        emptyMessage.textContent = patients.length ? "" : "No patients found.";
+ 
+        for (const patient of patients) {
+            const row = document.createElement("tr");
+            row.appendChild(makeCell(patient.patient_number));
+            row.appendChild(makeCell(patient.full_name));
+            row.appendChild(makeCell(patient.date_of_birth));
+            row.appendChild(makeCell(patient.phone));
+            resultsBody.appendChild(row);
+        }
+    }
+ 
+        let searchTimer;
+    searchBox.addEventListener("input", () => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(loadPatients, 300);
+    });
+ 
+    const form = document.getElementById("register-form");
+    if (form) {
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const message = document.getElementById("register-message");
+            message.className = "message";
+            message.textContent = "";
+ 
+            const response = await fetch("/api/patients", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    full_name: document.getElementById("full_name").value,
+                    date_of_birth: document.getElementById("date_of_birth").value,
+                    phone: document.getElementById("phone").value
+                })
+            });
+            const data = await response.json();
+ 
+            if (response.ok) {
+                message.className = "message ok";
+                message.textContent =
+                    "Registered " + data.full_name + " with number " + data.patient_number;
+                form.reset();
+                loadPatients();
+            } else {
+                message.className = "message bad";
+                message.textContent = data.errors
+                    ? Object.values(data.errors).join(" ")
+                    : (data.error || "Something went wrong.");
+            }
+        });
+    }
+ 
+    loadPatients();
+</script>
+{% endblock %}

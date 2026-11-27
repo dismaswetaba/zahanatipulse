@@ -115,3 +115,22 @@ body.app { display: block; }
   color: #1f4e79;
 }
 .content { max-width: 960px; margin: 1.5rem auto; padding: 0 1rem; }
+
+/* ---- patients page ---- */
+.panel {
+  background: #fff;
+  padding: 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+.panel h2 { margin-top: 0; color: #1f4e79; font-size: 1.1rem; }
+
+.table-wrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+.table th, .table td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #e3e8ee; }
+.table th { color: #1f4e79; }
+.message { min-height: 1.2rem; }
+.message.ok { color: #2e7d32; }
+.message.bad { color: #c0392b; }
+

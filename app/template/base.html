@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}ZahanatiPulse{% endblock %}</title>
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="app">
+    <header class="topbar">
+        <span class="brand">ZahanatiPulse</span>
+
+        <nav>
+            {% for item in menu %}
+                <a href="{{ item.url }}">{{ item.label }}</a>
+            {% endfor %}
+        </nav>
+
+        <div class="userbox">
+            <span>
+                {{ session.full_name }} •
+                {{ session.role }} •
+                {{ session.facility_name }}
+            </span>
+            <button id="logout" class="link-button" type="button">
+                Log out
+            </button>
+        </div>
+    </header>
+
+    <main class="content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+        document.getElementById("logout").addEventListener("click", async () => {
+            const response = await fetch("/api/auth/logout", {
+                method: "POST"
+            });
+
+            if (response.ok) {
+                window.location.href = "/login";
+            }
+        });
+    </script>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
